@@ -7,3 +7,7 @@ from .serializers import BlogPostSerializer
 class BlogPostListCreate(generics.ListCreateAPIView):
     queryset = BlogPost.objects.all()
     serializer_class = BlogPostSerialize
+    
+
+class BlogPostUpdate(generics.RetrieveUpdateDestroyAPIView):
+    queryset = BlogPost.object.all()
