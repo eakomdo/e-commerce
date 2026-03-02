@@ -11,3 +11,4 @@ class BlogPostListCreate(generics.ListCreateAPIView):
 
 class BlogPostUpdate(generics.RetrieveUpdateDestroyAPIView):
     queryset = BlogPost.object.all()
+    serializer_class
