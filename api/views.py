@@ -3,6 +3,7 @@ from .models import BlogPost
 from .serializers import BlogPostSerializer
 
 
+#views with generics
 class BlogPostListCreate(generics.ListCreateAPIView):
     queryset = BlogPost.objects.all()
     serializer_class = BlogPostSerializer
