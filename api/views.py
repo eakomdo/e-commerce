@@ -11,4 +11,4 @@ class BlogPostListCreate(generics.ListCreateAPIView):
 #delete blog posts and updates, and retrievee
 class BlogPostUpdate(generics.RetrieveUpdateDestroyAPIView):
     queryset = BlogPost.object.all()
-    serializer_class = BlogPostSerializer
+    serializer_class = BlogPostSerializeer
