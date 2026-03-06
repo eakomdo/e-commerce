@@ -31,3 +31,28 @@ def create(self, validated_data):
     user = User.objects.create_user(**validated_data)
     return user
 
+
+#login serializer
+class LoginSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    password = serializers.CharField(write_only=True)
+    
+    
+    def validate (self, attrs):
+        email = attrs.get('email')
+        self.password = attrs.get('password')
+        
+        user = authenticate(username=email, password=password)
+        
+        if not user:
+            raise serializers.ValidationError('Invalid Email or Password')
+        
+        if not user.is_verified:
+            raise serializers.ValidationError('Please verify your email first')
+        
+        if not user.is_active:
+            raise serializers.ValidationError('Your account is disabled')
+        
+        attrs['user'] = user
+        
+        return attrs
