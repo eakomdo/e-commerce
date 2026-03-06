@@ -75,3 +75,22 @@ class LoginSerializer(serializers.Serializer):
             
             read_only_fields = ['id', 'email', 'role', 'is_verified', 'created_at']
 
+#password reset request serializer
+class PasswordResetRequestSerialiazer(serializers.Serializer):
+    email = serializers.EmailField()
+    
+    def validate_email(self, value):
+        if not User.objects.filter(email=value).exists():
+            raise serializers.ValidationError('Email not found')
+        return value
+    
+#password reset  confirm
+class PasswordResetConfirm(serializers.Serializer):
+    token = serializers.CharField()
+    new_password = serializers.CharField(write_only=True, min_length=8)
+    confirm_password = serializers.CharField(write_only=True)
+    
+    def validate(self, attrs):
+         if attrs['new_password'] != attrs['confirm_password']:
+            raise serializers.ValidationError('Passwords do not match')
+         return attrs   
