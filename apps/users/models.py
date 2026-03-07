@@ -32,4 +32,4 @@ class User(AbstractBaseUser, PermissionsMixin):
     
     @property
     def is_admin(self):
-        return self.Role == self.Role.ADMI
+        return self.Role == self.Role.ADMIN
