@@ -26,4 +26,9 @@ def generate_jwt_token(User):
     
 #registrstion endpoint
 def post (self, request):
+    serializer = RegistrationSerializer(request=data)
     
+    if serializer.is_valid(raise_exception=True):
+        user = serializer.save()
+        
+        
