@@ -24,3 +24,6 @@ def generate_jwt_token(User):
         'access': str(refresh.access_token)
     }
     
+#registrstion endpoint
+def post (self, request):
+    
