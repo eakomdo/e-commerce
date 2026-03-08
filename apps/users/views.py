@@ -31,4 +31,14 @@ def post (self, request):
     if serializer.is_valid(raise_exception=True):
         user = serializer.save()
         
+        #generate email token
+        token = default_token_generator.make_token(user)
+        
+        return {
+            'Registration Successful. Verification link has been sent to your email',
+            'Please. verify your email'
+            
+        }, status = status.HTTP_201_CREATED
+        
+        
         
