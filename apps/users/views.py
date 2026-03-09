@@ -123,6 +123,27 @@ class PasswordResetRequestView(APIView):
             uid = urlsafe_base64_encode(force_bytes(user.pk))
             
             #reset link
-            reset_link = f"http://localhost:8000/api/users/password-reset-link/uid={uid}&token{token}"
+            reset_link = f"http://localhost:8000/api/users/password-reset-confirm/?uid={uid}&token{token}"
             
             return Response({'Password reset link has been sent to your mail'}, status=status.HTTP_200_OK)
+    
+
+#password reset confirm endpoint
+class PasswordConfirmView(APIView):
+    permission_classes = [AllowAny]
+    
+    def post(self, request):
+        serializer = PasswordResetConfirm(data=request.data)
+        
+        if serializer.is_valid(raise_exception=True):
+            uid = request.query_params.get(user)
+            token = request.query_params.get(token)
+            
+            try:
+                user_id = force_str(urlsafe_base64_decode(uid))
+                user = User.objects.get(pk=user_id)
+                
+            except(User.DoesNotExist, ValueError):
+                return Response({'Invalid link'}, status=status.HTTP_400_BAD_REQUEST)
+            
+            
