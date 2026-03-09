@@ -46,3 +46,26 @@ class Registration(APIView):
         
         
 #verify email endpoint
+class VerifyEmail(APIView):
+    permission_classes = [AllowAny]
+    
+    def get(self, request):
+        uid = request.query_params.get('uid')
+        token = request.query_params.get('token')
+        
+        try:
+            user_id = force_str(urlsafe_base64_decode(uid))
+            #find user
+            user = User.objects.get(pk=user_id)
+            
+        except(User.DoesNotExist, ValueError):
+            return Response ({'Invalid link'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        if not default_token_generator.check_token(user, token):
+            return Response({'Invalid link or url has expired'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        user.is_verified = True
+        user.save()
+        
+        return Response({'Email has been verified successfully'}, status=status.HTTP_200_OK)
+            
