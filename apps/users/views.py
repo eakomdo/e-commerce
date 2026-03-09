@@ -82,4 +82,17 @@ class LoginView(APIView):
             tokens = get_token_for_user(user)
             
             return Response ({'Login successful', 'tokens': tokens, 'User': UserSerializer(user).data}, status==status.HTTP_200_OK)
+        
+
+#user profile endpoint/ uapdating 
+class UserProfileView(APIView):
+    permission_classes = [IsAuthenticated]
+    
+    
+    def get(self, request):
+        serializer = UserSerializer(request.user)
+        
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    #updating profile
             
