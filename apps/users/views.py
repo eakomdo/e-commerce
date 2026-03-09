@@ -46,7 +46,7 @@ class RegistrationView(APIView):
         
         
 #verify email endpoint
-class VerifyEmail(APIView):
+class VerifyEmailView(APIView):
     permission_classes = [AllowAny]
     
     def get(self, request):
