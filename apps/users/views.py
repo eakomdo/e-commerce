@@ -38,11 +38,11 @@ class Registration(APIView):
         #generate email token
         token = default_token_generator.make_token(user)
         
-        return {
+        return ({
             'Registration Successful. Verification link has been sent to your email',
             'Please. verify your email'
             
-        }, status = status.HTTP_201_CREATED
+        }, status = status.HTTP_201_CREATED)
         
         
 #verify email endpoint
