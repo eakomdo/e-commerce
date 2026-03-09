@@ -45,4 +45,4 @@ class Registration(APIView):
         }, status = status.HTTP_201_CREATED
         
         
-        
+#verify email endpoint
