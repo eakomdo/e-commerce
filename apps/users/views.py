@@ -75,5 +75,11 @@ class LoginView(APIView):
     permission_classes = [AllowAny]
     
     def get(self, request):
-        UserSerializer
+        serializer = LoginSerializer(data=request.data)
+        
+        if serializer.is_valid(raise_exception=True):
+            user = serializer.validated_data('user')
+            tokens = get_token_for_user(user)
+            
+            return Response ({'Login successful', 'tokens': tokens, 'User': UserSerializer(user).data}, status==status.HTTP_200_OK)
             
