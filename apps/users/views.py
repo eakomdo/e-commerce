@@ -68,4 +68,12 @@ class VerifyEmail(APIView):
         user.save()
         
         return Response({'Email has been verified successfully'}, status=status.HTTP_200_OK)
+    
+
+#login endpoint
+class LoginView(APIView):
+    permission_classes = [AllowAny]
+    
+    def get(self, request):
+        UserSerializer
             
