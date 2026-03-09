@@ -146,4 +146,4 @@ class PasswordConfirmView(APIView):
             except(User.DoesNotExist, ValueError):
                 return Response({'Invalid link'}, status=status.HTTP_400_BAD_REQUEST)
             
-            
+            #check if token is valid
