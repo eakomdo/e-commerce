@@ -105,4 +105,22 @@ class UserProfileView(APIView):
         if serializer.is_valid(raise_exception=True):
             serializer.save()
             
-            return Response({'Profile updated successfully', 'User':serializer.data}, status=status.HTTP_200_OK)
+            return Response({'Profile updated successfully', 'User': serializer.data}, status=status.HTTP_200_OK)
+
+
+#password request link endpoint
+class PasswordResetRequestView(APIView):
+    permission_classes = [AllowAny]
+    
+    def get(self, request):
+        serializer = PasswordResetRequestSerialiazer(data=request.data)
+        
+        if serializer.is_valid(raise_exception=True):
+            email = serializer.validated_data('user')
+            user = User.objects.get(email=email)
+            
+            token = default_token_generator.make_token(user)
+            uid = urlsafe_base64_encode(force_bytes(user.pk))
+            
+            
+            return Response({'Password reset link has been sent to your mail'}, status=status.HTTP_200_OK)
