@@ -122,5 +122,7 @@ class PasswordResetRequestView(APIView):
             token = default_token_generator.make_token(user)
             uid = urlsafe_base64_encode(force_bytes(user.pk))
             
+            #reset link
+            reset_link = f"http://localhost:8000/api/users/password-reset-link/uid={uid}&token{token}"
             
             return Response({'Password reset link has been sent to your mail'}, status=status.HTTP_200_OK)
