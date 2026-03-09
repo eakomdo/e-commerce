@@ -25,7 +25,7 @@ def generate_jwt_token(User):
     }
     
 #registrstion endpoint
-class Registration(APIView):
+class RegistrationView(APIView):
     permission_classes = [AllowAny]
     
     
@@ -153,4 +153,4 @@ class PasswordConfirmView(APIView):
             user.get_password(serializer.validated_data['new_password'])
             user.save()
             
-            
+            return Response ({'Password Reset Successfully'}, status=status.HTTP_200_OK)
