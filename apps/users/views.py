@@ -30,7 +30,6 @@ class RegistrationView(APIView):
     
     
     def post(self, request):
-        # Pass incoming data to the serializer
         serializer = RegisterSerializer(data=request.data)
 
         # is_valid() runs all our validation checks
