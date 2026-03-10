@@ -53,21 +53,24 @@ class VerifyEmailView(APIView):
         uid = request.query_params.get('uid')
         token = request.query_params.get('token')
         
+        if not uid or not token:
+            return Response({'message': 'Missing uid or token'}, status=status.HTTP_400_BAD_REQUEST)
+        
         try:
             user_id = force_str(urlsafe_base64_decode(uid))
             #find user
             user = User.objects.get(pk=user_id)
             
-        except(User.DoesNotExist, ValueError):
-            return Response ({'Invalid link'}, status=status.HTTP_400_BAD_REQUEST)
+        except (User.DoesNotExist, ValueError, TypeError):
+            return Response({'message': 'Invalid link'}, status=status.HTTP_400_BAD_REQUEST)
         
         if not default_token_generator.check_token(user, token):
-            return Response({'Invalid link or url has expired'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'message': 'Invalid link or url has expired'}, status=status.HTTP_400_BAD_REQUEST)
         
         user.is_verified = True
         user.save()
         
-        return Response({'Email has been verified successfully'}, status=status.HTTP_200_OK)
+        return Response({'message': 'Email has been verified successfully'}, status=status.HTTP_200_OK)
     
 
 #login endpoint
