@@ -32,21 +32,14 @@ class RegistrationView(APIView):
     def post(self, request):
         serializer = RegisterSerializer(data=request.data)
 
-        # is_valid() runs all our validation checks
-        # raise_exception=True automatically returns 400 if invalid
         if serializer.is_valid(raise_exception=True):
-
-            # Save the user — this calls our create() method in the serializer
             user = serializer.save()
 
             # Generate email verification token
             token = default_token_generator.make_token(user)
-
-            # Encode user id so we can safely put it in a URL
             uid = urlsafe_base64_encode(force_bytes(user.pk))
 
             # Build verification link
-            # Frontend will hit this link when user clicks verify
             verification_link = f"http://localhost:8000/api/users/verify-email/?uid={uid}&token={token}"
 
             # TODO: send this link via email (we'll do this in notifications app)
