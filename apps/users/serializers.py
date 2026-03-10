@@ -4,7 +4,7 @@ from .models import User
 
 
 # user registration
-class RegistrationSerializer(serializers.ModelSerializer):
+class RegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, min_length=8)
     confirm_password = serializers.CharField(write_only=True)
 
@@ -37,7 +37,7 @@ class LoginSerializer(serializers.Serializer):
 
     def validate(self, attrs):
         email = attrs.get("email")
-        self.password = attrs.get("password")
+        password = attrs.get("password")
 
         user = authenticate(username=email, password=password)
 
@@ -85,7 +85,6 @@ class PasswordResetRequestSerialiazer(serializers.Serializer):
     
 #password reset  confirm
 class PasswordResetConfirm(serializers.Serializer):
-    token = serializers.CharField()
     new_password = serializers.CharField(write_only=True, min_length=8)
     confirm_password = serializers.CharField(write_only=True)
     
