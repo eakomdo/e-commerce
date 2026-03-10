@@ -10,7 +10,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        field = [
+        fields = [
             "first_name",
             "last_name",
             "email",
