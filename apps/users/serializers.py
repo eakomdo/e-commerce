@@ -19,17 +19,15 @@ class RegistrationSerializer(serializers.ModelSerializer):
             "confirm_password",
         ]
 
+    def validate(self, attrs):
+        if attrs["password"] != attrs["confirm_password"]:
+            raise serializers.ValidationError("Passwords do no match")
+        return attrs
 
-def validate(self, attrs):
-    if attrs["password"] != attrs["confirm_password"]:
-        raise serializers.ValidationError("Passwords do no match")
-    return attrs
-
-
-def create(self, validated_data):
-    validated_data.pop("confirm_password")
-    user = User.objects.create_user(**validated_data)
-    return user
+    def create(self, validated_data):
+        validated_data.pop("confirm_password")
+        user = User.objects.create_user(**validated_data)
+        return user
 
 
 # login serializer
@@ -55,25 +53,26 @@ class LoginSerializer(serializers.Serializer):
         attrs["user"] = user
 
         return attrs
-    
-    #user serializer
-    class UserSerialiazer(serializers.ModelSerializer):
-        full_name = serializers.CharField(read_only=True)
-        
-        class Meta:
-            model = User
-            fields = ['id',
-            'email',
-            'first_name',
-            'last_name',
-            'full_name',
-            'phone_number',
-            'profile_picture',
-            'role',
-            'is_verified',
-            'created_at',]
-            
-            read_only_fields = ['id', 'email', 'role', 'is_verified', 'created_at']
+
+
+#user serializer
+class UserSerializer(serializers.ModelSerializer):
+    full_name = serializers.CharField(read_only=True)
+
+    class Meta:
+        model = User
+        fields = ['id',
+        'email',
+        'first_name',
+        'last_name',
+        'full_name',
+        'phone_number',
+        'profile_picture',
+        'role',
+        'is_verified',
+        'created_at',]
+
+        read_only_fields = ['id', 'email', 'role', 'is_verified', 'created_at']
 
 #password reset request serializer
 class PasswordResetRequestSerialiazer(serializers.Serializer):

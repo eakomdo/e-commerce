@@ -30,19 +30,17 @@ class RegistrationView(APIView):
     
     
     def post (self, request):
-    serializer = RegistrationSerializer(request=data)
+        serializer = RegistrationSerializer(request=data)
 
-    if serializer.is_valid(raise_exception=True):
-        user = serializer.save()
-        
-        #generate email token
-        token = default_token_generator.make_token(user)
-        
-        return ({
-            'Registration Successful. Verification link has been sent to your email',
-            'Please. verify your email'
-            
-        }, status = status.HTTP_201_CREATED)
+        if serializer.is_valid(raise_exception=True):
+            user = serializer.save()
+
+            #generate email token
+            token = default_token_generator.make_token(user)
+
+            return Response({
+                'message': 'Registration Successful. Verification link has been sent to your email'
+            }, status=status.HTTP_201_CREATED)
         
         
 #verify email endpoint
@@ -84,7 +82,7 @@ class LoginView(APIView):
             user = serializer.validated_data('user')
             tokens = get_token_for_user(user)
             
-            return Response ({'Login successful', 'tokens': tokens, 'User': UserSerializer(user).data}, status==status.HTTP_200_OK)
+            return Response({'message': 'Login successful', 'tokens': tokens, 'User': UserSerializer(user).data}, status=status.HTTP_200_OK)
         
 
 #user profile endpoint/ uapdating 
@@ -108,7 +106,7 @@ class UserProfileView(APIView):
         if serializer.is_valid(raise_exception=True):
             serializer.save()
             
-            return Response({'Profile updated successfully', 'User': serializer.data}, status=status.HTTP_200_OK)
+            return Response({'message': 'Profile updated successfully', 'User': serializer.data}, status=status.HTTP_200_OK)
 
 
 #password request link endpoint
@@ -128,7 +126,7 @@ class PasswordResetRequestView(APIView):
             #reset link
             reset_link = f"http://localhost:8000/api/users/password-reset-confirm/?uid={uid}&token{token}"
             
-            return Response({'Password reset link has been sent to your mail'}, status=status.HTTP_200_OK)
+            return Response({'message': 'Password reset link has been sent to your mail'}, status=status.HTTP_200_OK)
     
 
 #password reset confirm endpoint
@@ -147,13 +145,13 @@ class PasswordConfirmView(APIView):
                 user = User.objects.get(pk=user_id)
                 
             except(User.DoesNotExist, ValueError):
-                return Response({'Invalid link'}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({'message': 'Invalid link'}, status=status.HTTP_400_BAD_REQUEST)
             
             #check if token is valid
             if not default_token_generator.check_token(user, token):
-                return Response ({'Invalid link or token has expired'}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({'message': 'Invalid link or token has expired'}, status=status.HTTP_400_BAD_REQUEST)
             
             user.get_password(serializer.validated_data['new_password'])
             user.save()
             
-            return Response ({'Password Reset Successfully'}, status=status.HTTP_200_OK)
+            return Response({'message': 'Password Reset Successfully'}, status=status.HTTP_200_OK)
