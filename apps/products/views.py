@@ -20,4 +20,28 @@ class IsAdminOrReadOnly(AllowAny):
             return True
         return (request.user.is_authenticated and request.user_is_admin)
     
+
+class CategoryListCreateView(APIView):
+    permission_classes = [IsAdminOrReadOnly]
     
+    #list categories
+    def get(self, request):
+        categories = Category.objects.all()
+        serializer = CategorySerializer(
+            categories,
+            many=True,
+            context={'request': request}
+        )
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    
+    #create a category
+    def post(self, request):
+        serializer = CategorySerializer(
+            data=request.data,
+            context={'request': request}
+        )
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response({'Category has been added successsfuly'}, status=status.HTTP_200_OK)
+        
