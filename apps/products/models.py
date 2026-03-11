@@ -47,6 +47,10 @@ class Product(models.Model):
 def is_in_stock(self):
     return self.stock > 0
 
+@property
+def effective_price(self):
+    return self.discount_price if self.discount_price else self.price
+
 
 @property
 def discount_percentage(self):
