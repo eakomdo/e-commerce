@@ -64,3 +64,23 @@ class ProductSerialiser(serializers.ModelSerializer):
             if discount_price and discount_price >= price:
                 raise serializers.ValidationError('Discount price must be greater than the regular price')
             return attrs
+        
+class CategorySerializer(serializers.Serializer):
+    products = ProductSerialiser(many=True, read_only=True)
+    product_count = serializers.SerializerMethodField()
+    
+    class Meta:
+        model = Category
+        fields = [
+            'id',
+            'name',
+            'slug',
+            'description',
+            'product_count',
+            'products',
+            'created_at',
+        ]
+        read_only_fields = ['id', 'slug', 'created_at']
+        
+        def get_product_count(self, obj):
+            return obj.products.filter(is_available=True).count()
