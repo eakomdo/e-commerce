@@ -45,3 +45,39 @@ class CategoryListCreateView(APIView):
             serializer.save()
             return Response({'Category has been added successsfuly'}, status=status.HTTP_200_OK)
         
+        
+#get a single category, update and delete        
+class   CategoryDetailView(APIView):
+    permission_classes = [IsAdminOrReadOnly]
+    
+    def get_object(self, slug):
+        return get_object_or_404(Category, slug=slug)
+    
+    #get a single category
+    def get(self, slug):
+        Category = self.get_object(slug)
+        serializer = CategorySerializer(
+            Category,
+            context={'request': self.request}
+        )
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    #update a category
+    def put(self, slug):
+        Category = self.get_object(slug)
+        serializer = CategorySerializer(
+            Category,
+            partial=True,
+            context={'request': request}
+        )
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response({'Your category has been updated successfully'}, status=status.HTTP_200_OK)
+        
+    #delete a category
+    def delete(self, slug):
+        Category = self.get_object(slug)
+        Category.delete()
+        return Response({'Category deleted successfuly'}, status=status.HTTP_200_OK)
+    
+    
