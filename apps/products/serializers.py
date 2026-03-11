@@ -48,6 +48,15 @@ class ProductSerialiser(serializers.ModelSerializer):
         
         
         def validate_price(self, value):
-            if 
-    
+            if value <= 0:
+                raise serializers.ValidationError('Price must be greater than 0')
+            return value
+        
+        def validate_discount_price(self, value):
+            if value is not None and value <= 0:
+                raise serializers.ValidationError('Discount price cannot be nagative')
+            return value
+        
+        def validate(self, attrs):
+            
     
