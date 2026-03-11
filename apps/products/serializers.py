@@ -5,3 +5,11 @@ from .models import (
     Product,
     ProductImage
 )
+
+
+class ProductImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProductImage
+        fields = ['id', 'image', 'caption']
+        
+    
