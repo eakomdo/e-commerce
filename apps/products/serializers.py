@@ -58,5 +58,9 @@ class ProductSerialiser(serializers.ModelSerializer):
             return value
         
         def validate(self, attrs):
+            price = attrs.get('price')
+            discount_price = attrs.get('discount_price')
             
-    
+            if discount_price and discount_price >= price:
+                raise serializers.ValidationError('Discount price must be greater than the regular price')
+            return attrs

@@ -30,7 +30,7 @@ class Product(models.Model):
     slug = AutoSlugField(populate_from='name', always_update=False, unique=True)
     description = models.TextField(blank=True)
     price = models.DecimalField(max_digits=10, decimal_places=2, blank=False)
-    discount = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    discount_price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     stock = models.PositiveIntegerField(default=0)
     image = models.ImageField(upload_to='Me/Images/product_images', blank=False, null=False)
     is_available = models.BooleanField(default=False)
