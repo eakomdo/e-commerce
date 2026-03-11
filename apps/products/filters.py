@@ -35,4 +35,6 @@ class ProductFilter(django_filters.filterset):
         return queryset.filter(discount_price__isnull=True)
     
     def filter_in_stock(self, queryset, name, value):
-        
+        if value:
+            return queryset.filter(stock__gt=0)
+        return queryset.filter(stock=0)
