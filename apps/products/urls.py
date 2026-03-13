@@ -18,7 +18,6 @@ urlpatterns = [
     path('categories/<slug:slug>/', CategoryDetailView.as_view(), name='category-detail'),
 
     #list all products (supports filtering), create a product (admin only)
-    #
     path('', ProductListCreateView.as_view(), name='product-list'),
 
     #get single product by slug
