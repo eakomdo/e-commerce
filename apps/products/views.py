@@ -104,8 +104,8 @@ class ProductImageUploadView(APIView):
         #create a product image for each image uploaded
         uploaded_images = []
         
-        for index, image in enumerate(images:
+        for index, image in enumerate(images):
+            product_image = ProductImage.objects.create(product=product, images=image, order=index)
+            uploaded_images.append(product_image)
             
-        
-        
-        
+            serializer = ProductImageSerializer()
