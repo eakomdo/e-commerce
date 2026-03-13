@@ -108,4 +108,6 @@ class ProductImageUploadView(APIView):
             product_image = ProductImage.objects.create(product=product, images=image, order=index)
             uploaded_images.append(product_image)
             
-            serializer = ProductImageSerializer()
+            serializer = ProductImageSerializer(uplaoded_images, many=True, context={'request': request})
+            
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
