@@ -88,3 +88,8 @@ class ProductImageUploadView(APIView):
     permission_parser = [MultiPartParser, FormParser]
     
     
+    def post(self, request, slug):
+        product = get_object_or_404(Product, slug)
+        
+        if not request.user.is_admin:
+            
