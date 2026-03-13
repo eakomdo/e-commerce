@@ -20,9 +20,7 @@ urlpatterns = [
     #list all products (supports filtering), create a product (admin only)
     path('', ProductListCreateView.as_view(), name='product-list'),
 
-    #get single product by slug, update product (admin only),
-    #
-    #delete product (admin only)
+    #get single product by slug, update product (admin only), delete product (admin only)
     path('<slug:slug>/', ProductDetailView.as_view(), name='product-detail'),
 
     #upload images for a product (admin only)
