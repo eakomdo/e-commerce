@@ -81,3 +81,10 @@ class   CategoryDetailView(APIView):
         return Response({'Category deleted successfuly'}, status=status.HTTP_200_OK)
     
     
+    
+#product image view
+class ProductImageUploadView(APIView):
+    permission_classes =[IsAuthenticated]
+    permission_parser = [MultiPartParser, FormParser]
+    
+    
