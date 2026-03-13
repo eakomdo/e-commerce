@@ -92,4 +92,4 @@ class ProductImageUploadView(APIView):
         product = get_object_or_404(Product, slug)
         
         if not request.user.is_admin:
-            
+            return Response (f"{'You can't perform this action}")
