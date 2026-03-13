@@ -92,4 +92,20 @@ class ProductImageUploadView(APIView):
         product = get_object_or_404(Product, slug)
         
         if not request.user.is_admin:
-            return Response (f"{'You can't perform this action}")
+            return Response ({"You can't perform this action"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        #listing all images
+        images = request.FILES.getlist('images')
+        
+        if not images:
+            return Response({'No images uploaded'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        
+        #create a product image for each image uploaded
+        uploaded_images = []
+        
+        for index, image in enumerate(images:
+            
+        
+        
+        
