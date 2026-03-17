@@ -81,7 +81,10 @@ class   CategoryDetailView(APIView):
         return Response({'Category deleted successfuly'}, status=status.HTTP_200_OK)
     
 #Product List create view
-class ProductListCreateView(APIView)
+class ProductListCreateView(APIView):
+    permission_classes = [IsAdminOrReadOnly]
+    
+    #list products
     
 #product image view
 class ProductImageUploadView(APIView):
