@@ -92,8 +92,11 @@ class ProductListCreateView(APIView):
     
     #add a product
     def post(self, request):
-        serializer = ProductSerialiser(data=request.data)
-        
+        serializer = ProductSerialiser(data=request.data, context={'request': request})
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response({'Product has been added successfully'}, status=status.HTTP_200_OK)
+              
     
 #product image view
 class ProductImageUploadView(APIView):
