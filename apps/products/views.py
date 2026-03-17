@@ -85,6 +85,14 @@ class ProductListCreateView(APIView):
     permission_classes = [IsAdminOrReadOnly]
     
     #list products
+    def get(self, request):
+        products = Product.objects.all()
+        serializer = ProductSerialiser(products, many=true, context={'request': request})
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    #add a product
+    def post(self, request):
+        
     
 #product image view
 class ProductImageUploadView(APIView):
