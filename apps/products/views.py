@@ -80,7 +80,8 @@ class   CategoryDetailView(APIView):
         Category.delete()
         return Response({'Category deleted successfuly'}, status=status.HTTP_200_OK)
     
-    
+#Product List create view
+class ProductListCreateView(APIView)
     
 #product image view
 class ProductImageUploadView(APIView):
