@@ -92,6 +92,7 @@ class ProductListCreateView(APIView):
     
     #add a product
     def post(self, request):
+        serializer = ProductSerialiser(data=request.data)
         
     
 #product image view
