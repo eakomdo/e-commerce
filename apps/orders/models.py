@@ -1,12 +1,25 @@
 from django.db import models
 from apps.users.models import User
+from apps.products.models import Product
 
-#cart model
+
+# cart model
 class Cart(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='cart')
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="cart")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    
+
+    def __str__(self):
+        return f"Cart of {self.user.email}"
+
     @property
     def total_item(self):
-        
+        return self.aggregate.items.all(total=models.Sum("quantity")["total"] or 0)
+
+    @property
+    def total_price(self):
+        total = Sum(
+            item.product.effective_price * item.quantity for item in self.items.all()
+        )
+        return round(total, 2)
+    
