@@ -71,3 +71,10 @@ class Order(models.Model):
             return self.status == Status.PENDING
     
 #order item model
+class OrderItem(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items')
+    Product = models.ForeignKey(Product, on_delete=models.SET_NULL, related_name='order_item')
+    quantity = models.PositiveIntegerField()
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    
+    
