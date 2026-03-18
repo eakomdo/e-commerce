@@ -44,8 +44,8 @@ class CartItem(models.Model):
 class Order(models.Model):
     
     class Status(models.TextChoices):
-        PENDING
-        PROCESSING
-        SHIPPED
-        DELIVERED
-        CANCELLED
+        PENDING = 'pending', 'Pending'
+        PROCESSING = 'processing', 'Processing'
+        SHIPPED = 'shipped', 'Shipped'
+        DELIVERED = 'delivered', 'Delivered'
+        CANCELLED = 'cancelled', 'Cancelled'
