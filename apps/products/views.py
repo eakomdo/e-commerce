@@ -77,7 +77,7 @@ class   CategoryDetailView(APIView):
     def delete(self, slug):
         Category = self.get_object(slug)
         Category.delete()
-        return Response({'Category deleted successfuly'}, status=status.HTTP_200_OK)
+        return Response({'Category deleted successfuly'}, status=status.HTTP_204_NO_CONTENT)
     
 #Product List create view
 class ProductListCreateView(APIView):
@@ -117,12 +117,12 @@ class ProductDetailView(APIView):
             serializer.save()
             return Response({'Your product has been updated successfully'}, status=status.HTTP_201_CREATED)
         
-        #delete a product
-        def delete(self, slug):
-            product = self.get_object(slug)
-            product.delete()
-            return Response({'Product deleted successfully'}, status=status.HTTP_200_OK)
-        
+    #delete a product
+    def delete(self, slug):
+        product = self.get_object(slug)
+        product.delete()
+        return Response({'Product deleted successfully'}, status=status.HTTP_204_NO_CONTENT)
+    
     
 #product image view
 class ProductImageUploadView(APIView):
