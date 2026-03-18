@@ -113,6 +113,12 @@ class ProductDetailView(APIView):
     def put(self, slug):
         product = self.get_object(slug)
         serializer = ProductSerialiser(product, partial=True, context={'request': request})
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response({'Your product has been updated successfully'}, status=status.HTTP_201_CREATED)
+        
+        #delete a product
+        
         
     
 #product image view
