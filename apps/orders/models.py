@@ -40,3 +40,12 @@ class CartItem(models.Model):
     def subtotal(self):
         return round(self.product.effective_price * self.quantity, 2)
     
+#Order model
+class Order(models.Model):
+    
+    class Status(models.TextChoices):
+        PENDING
+        PROCESSING
+        SHIPPED
+        DELIVERED
+        CANCELLED
