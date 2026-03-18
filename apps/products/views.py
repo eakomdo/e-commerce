@@ -118,7 +118,10 @@ class ProductDetailView(APIView):
             return Response({'Your product has been updated successfully'}, status=status.HTTP_201_CREATED)
         
         #delete a product
-        
+        def delete(self, slug):
+            product = self.get_object(slug)
+            product.delete()
+            return Response({'Product deleted successfully'}, status=status.HTTP_200_OK)
         
     
 #product image view
