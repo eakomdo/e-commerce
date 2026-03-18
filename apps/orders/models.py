@@ -24,3 +24,6 @@ class Cart(models.Model):
         return round(total, 2)
     
 #Cart Item model
+class CartItem(models.Model):
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name='cart_items')
+    
