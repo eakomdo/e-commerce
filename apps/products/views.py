@@ -5,151 +5,154 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.parsers import MultiPartParser, FormParser
 from django.shortcuts import get_object_or_404
 from .filters import ProductFilter
-from .serializers import(
-    ProductSerialiser,
-    CategorySerializer,
-    ProductImageSerializer
-)
+from .serializers import ProductSerialiser, CategorySerializer, ProductImageSerializer
 from .models import Product, Category, ProductImage
 
 
-#permission funtion
+# permission funtion
 class IsAdminOrReadOnly(AllowAny):
     def has_permission(self, request, view):
-        if request.method in ['GET', 'HEAD', 'OPTIONS']:
+        if request.method in ["GET", "HEAD", "OPTIONS"]:
             return True
-        return (request.user.is_authenticated and request.user_is_admin)
-    
+        return request.user.is_authenticated and request.user_is_admin
+
 
 class CategoryListCreateView(APIView):
     permission_classes = [IsAdminOrReadOnly]
-    
-    #list categories
+
+    # list categories
     def get(self, request):
         categories = Category.objects.all()
         serializer = CategorySerializer(
-            categories,
-            many=True,
-            context={'request': request}
+            categories, many=True, context={"request": request}
         )
         return Response(serializer.data, status=status.HTTP_200_OK)
-    
-    
-    #create a category
+
+    # create a category
     def post(self, request):
-        serializer = CategorySerializer(
-            data=request.data,
-            context={'request': request}
-        )
+        serializer = CategorySerializer(data=request.data, context={"request": request})
         if serializer.is_valid(raise_exception=True):
             serializer.save()
-            return Response({'Category has been added successsfuly'}, status=status.HTTP_200_OK)
-        
-        
-#get a single category, update and delete        
-class   CategoryDetailView(APIView):
+            return Response(
+                {"Category has been added successsfuly"}, status=status.HTTP_200_OK
+            )
+
+
+# get a single category, update and delete
+class CategoryDetailView(APIView):
     permission_classes = [IsAdminOrReadOnly]
-    
+
     def get_object(self, slug):
         return get_object_or_404(Category, slug=slug)
-    
-    #get a single category
+
+    # get a single category
     def get(self, slug):
-        serializer = CategorySerializer(
-            Category,
-            context={'request': self.request}
-        )
+        serializer = CategorySerializer(Category, context={"request": self.request})
         return Response(serializer.data, status=status.HTTP_200_OK)
-    
-    #update a category
+
+    # update a category
     def put(self, slug):
         Category = self.get_object(slug)
         serializer = CategorySerializer(
-            Category,
-            partial=True,
-            context={'request': request}
+            Category, partial=True, context={"request": request}
         )
         if serializer.is_valid(raise_exception=True):
             serializer.save()
-            return Response({'Your category has been updated successfully'}, status=status.HTTP_200_OK)
-        
-    #delete a category
+            return Response(
+                {"Your category has been updated successfully"},
+                status=status.HTTP_200_OK,
+            )
+
+    # delete a category
     def delete(self, slug):
         Category = self.get_object(slug)
         Category.delete()
-        return Response({'Category deleted successfuly'}, status=status.HTTP_204_NO_CONTENT)
-    
-#Product List create view
+        return Response(
+            {"Category deleted successfuly"}, status=status.HTTP_204_NO_CONTENT
+        )
+
+
+# Product List create view
 class ProductListCreateView(APIView):
     permission_classes = [IsAdminOrReadOnly]
-    
-    #list products
+
+    # list products
     def get(self, request):
-        products = Product.objects.all()
-        serializer = ProductSerialiser(products, many=true, context={'request': request})
-        return Response(serializer.data, status=status.HTTP_200_OK)
-    
-    #add a product
+       
+    # add a product
     def post(self, request):
-        serializer = ProductSerialiser(data=request.data, context={'request': request})
+        serializer = ProductSerialiser(data=request.data, context={"request": request})
         if serializer.is_valid(raise_exception=True):
             serializer.save()
-            return Response({'Product has been added successfully'}, status=status.HTTP_200_OK)
-        
-        
-#get a single product, update and delete
+            return Response(
+                {"Product has been added successfully"}, status=status.HTTP_200_OK
+            )
+
+
+# get a single product, update and delete
 class ProductDetailView(APIView):
     permission_classes = [IsAdminOrReadOnly]
-    
+
     def get_object(self, slug):
         return get_object_or_404(Product, slug=slug)
-    
-    #get a single product
+
+    # get a single product
     def get(self, slug):
-        serializer = ProductSerialiser(Product, context={'request': request})
+        serializer = ProductSerialiser(Product, context={"request": request})
         return Response(serializer.data, status=status.HTTP_200_OK)
-    
-    #update a product
+
+    # update a product
     def put(self, slug):
         product = self.get_object(slug)
-        serializer = ProductSerialiser(product, partial=True, context={'request': request})
+        serializer = ProductSerialiser(
+            product, partial=True, context={"request": request}
+        )
         if serializer.is_valid(raise_exception=True):
             serializer.save()
-            return Response({'Your product has been updated successfully'}, status=status.HTTP_201_CREATED)
-        
-    #delete a product
+            return Response(
+                {"Your product has been updated successfully"},
+                status=status.HTTP_201_CREATED,
+            )
+
+    # delete a product
     def delete(self, slug):
         product = self.get_object(slug)
         product.delete()
-        return Response({'Product deleted successfully'}, status=status.HTTP_204_NO_CONTENT)
-    
-    
-#product image view
+        return Response(
+            {"Product deleted successfully"}, status=status.HTTP_204_NO_CONTENT
+        )
+
+
+# product image view
 class ProductImageUploadView(APIView):
-    permission_classes =[IsAuthenticated]
+    permission_classes = [IsAuthenticated]
     permission_parser = [MultiPartParser, FormParser]
-    
-    
+
     def post(self, request, slug):
         product = get_object_or_404(Product, slug)
-        
+
         if not request.user.is_admin:
-            return Response ({"You can't perform this action"}, status=status.HTTP_400_BAD_REQUEST)
-        
-        #listing all images
-        images = request.FILES.getlist('images')
-        
+            return Response(
+                {"You can't perform this action"}, status=status.HTTP_400_BAD_REQUEST
+            )
+
+        # listing all images
+        images = request.FILES.getlist("images")
+
         if not images:
-            return Response({'No images uploaded'}, status=status.HTTP_400_BAD_REQUEST)
-        
-        
-        #create a product image for each image uploaded
+            return Response({"No images uploaded"}, status=status.HTTP_400_BAD_REQUEST)
+
+        # create a product image for each image uploaded
         uploaded_images = []
-        
+
         for index, image in enumerate(images):
-            product_image = ProductImage.objects.create(product=product, images=image, order=index)
+            product_image = ProductImage.objects.create(
+                product=product, images=image, order=index
+            )
             uploaded_images.append(product_image)
-            
-            serializer = ProductImageSerializer(uplaoded_images, many=True, context={'request': request})
-            
+
+            serializer = ProductImageSerializer(
+                uplaoded_images, many=True, context={"request": request}
+            )
+
             return Response(serializer.data, status=status.HTTP_201_CREATED)
