@@ -81,7 +81,8 @@ class ProductListCreateView(APIView):
         queryset = Products.objects.filter(is_available=True)
         product_filter = ProductFilter(request.GET, queryset=queryset)
         
-        serializer
+        serializer = ProductSerialiser(product_filter.qs, many=True, context={'request': request})
+        return Response(serializer.data, status=status.HTTP_200_OK)
        
        
     # add a product
