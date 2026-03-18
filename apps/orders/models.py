@@ -69,4 +69,5 @@ class Order(models.Model):
         @property
         def is_cancellable(self):
             return self.status == Status.PENDING
-        
+    
+#order item model
