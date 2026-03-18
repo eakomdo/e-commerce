@@ -101,7 +101,17 @@ class ProductListCreateView(APIView):
 class ProductDetailView(APIView):
     permission_classes = [IsAdminOrReadOnly]
     
-    def get
+    def get_object(self, slug):
+        return get_object_or_404(Product, slug=slug)
+    
+    #get a single product
+    def get(self, slug):
+        serializer = ProductSerialiser(Product, context={'request': request})
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    #update a product
+    def put(self, slug):
+        
     
 #product image view
 class ProductImageUploadView(APIView):
