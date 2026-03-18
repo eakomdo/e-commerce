@@ -49,3 +49,7 @@ class Order(models.Model):
         SHIPPED = 'shipped', 'Shipped'
         DELIVERED = 'delivered', 'Delivered'
         CANCELLED = 'cancelled', 'Cancelled'
+        
+        user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='orders')
+        status = models.CharField(max_length=20, choices=Status.choices, default=Status.PENDING)
+        
