@@ -111,6 +111,8 @@ class ProductDetailView(APIView):
     
     #update a product
     def put(self, slug):
+        product = self.get_object(slug)
+        serializer = ProductSerialiser(product, partial=True, context={'request': request})
         
     
 #product image view
