@@ -23,3 +23,4 @@ class Cart(models.Model):
         )
         return round(total, 2)
     
+#Cart Item model
