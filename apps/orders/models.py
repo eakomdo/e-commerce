@@ -1,3 +1,6 @@
 from django.db import models
+from apps.users.models import User
 
-# Create your models here.
+#cart model
+class Cart(models.Model):
+    user = models.ForeignKey(User)
