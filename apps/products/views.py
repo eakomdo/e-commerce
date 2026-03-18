@@ -78,6 +78,11 @@ class ProductListCreateView(APIView):
 
     # list products
     def get(self, request):
+        queryset = Products.objects.filter(is_available=True)
+        product_filter = ProductFilter(request.GET, queryset=queryset)
+        
+        seri
+       
        
     # add a product
     def post(self, request):
