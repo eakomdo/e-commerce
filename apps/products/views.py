@@ -55,7 +55,6 @@ class   CategoryDetailView(APIView):
     
     #get a single category
     def get(self, slug):
-        Category = self.get_object(slug)
         serializer = CategorySerializer(
             Category,
             context={'request': self.request}
@@ -96,7 +95,13 @@ class ProductListCreateView(APIView):
         if serializer.is_valid(raise_exception=True):
             serializer.save()
             return Response({'Product has been added successfully'}, status=status.HTTP_200_OK)
-              
+        
+        
+#get a single product, update and delete
+class ProductDetailView(APIView):
+    permission_classes = [IsAdminOrReadOnly]
+    
+    def get
     
 #product image view
 class ProductImageUploadView(APIView):
