@@ -65,3 +65,8 @@ class Order(models.Model):
         
         class Meta:
             ordering = ['-created_at']
+            
+        @property
+        def is_cancellable(self):
+            return self.status == Status.PENDING
+        
