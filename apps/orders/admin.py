@@ -11,3 +11,7 @@ class OrderAdmin(admin.ModelAdmin):
 @admin.register(Cart)
 class CartAdmin(admin.ModelAdmin):
     list_display = ['user', 'total_items', 'created_at']
+    
+
+admin.site.register(CartItem)
+admin.site.register(OrderItem)
