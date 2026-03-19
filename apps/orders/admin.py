@@ -3,4 +3,4 @@ from .models import Cart, CartItem, Order, OrderItem
 
 
 @admin.register(Order)
-class OrderAdmin(models.ModelAdmin)
+class OrderAdmin(admin.ModelAdmin)
