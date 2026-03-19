@@ -42,26 +42,25 @@ class Product(models.Model):
     
     class Meta:
         ordering = ['-created_at']
+    
+    @property
+    def is_in_stock(self):
+        return self.stock > 0
 
-@property
-def is_in_stock(self):
-    return self.stock > 0
+    @property
+    def effective_price(self):
+        return self.discount_price if self.discount_price else self.price
 
-@property
-def effective_price(self):
-    return self.discount_price if self.discount_price else self.price
-
-
-@property
-def discount_percentage(self):
-    if self.discount_price:
-        discount = ((self.price - self.discount_price) / self.price) *100
-        return round(discount, 2)
-    return 0
+    @property
+    def discount_percentage(self):
+        if self.discount_price:
+            discount = ((self.price - self.discount_price) / self.price) *100
+            return round(discount, 2)
+        return 0
 
 #product image (multiples images per product)
 class ProductImage(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='image')
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='images')
     image = models.ImageField(upload_to='Me/Images/product_images')
     caption = models.CharField(max_length=200, blank=True)
     order = models.PositiveIntegerField(default=0)

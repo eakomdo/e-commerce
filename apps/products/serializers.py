@@ -25,7 +25,7 @@ class ProductSerialiser(serializers.ModelSerializer):
     is_in_stock = serializers.BooleanField(read_only=True)
     discount_percentage = serializers.FloatField(read_only=True)
     
-      class Meta:
+    class Meta:
         model = Product
         fields = [
             'id',
@@ -45,25 +45,24 @@ class ProductSerialiser(serializers.ModelSerializer):
             'is_available',
             'created_at',
         ]
+    
+    def validate_price(self, value):
+        if value <= 0:
+            raise serializers.ValidationError('Price must be greater than 0')
+        return value
+    
+    def validate_discount_price(self, value):
+        if value is not None and value <= 0:
+            raise serializers.ValidationError('Discount price cannot be nagative')
+        return value
+    
+    def validate(self, attrs):
+        price = attrs.get('price')
+        discount_price = attrs.get('discount_price')
         
-        
-        def validate_price(self, value):
-            if value <= 0:
-                raise serializers.ValidationError('Price must be greater than 0')
-            return value
-        
-        def validate_discount_price(self, value):
-            if value is not None and value <= 0:
-                raise serializers.ValidationError('Discount price cannot be nagative')
-            return value
-        
-        def validate(self, attrs):
-            price = attrs.get('price')
-            discount_price = attrs.get('discount_price')
-            
-            if discount_price and discount_price >= price:
-                raise serializers.ValidationError('Discount price must be greater than the regular price')
-            return attrs
+        if discount_price and discount_price >= price:
+            raise serializers.ValidationError('Discount price must be greater than the regular price')
+        return attrs
         
 class CategorySerializer(serializers.Serializer):
     products = ProductSerialiser(many=True, read_only=True)

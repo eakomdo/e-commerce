@@ -4,8 +4,8 @@ from .models import Category, Product, ProductImage
 # This displays products with these columns in the admin panel
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ['name', 'category', 'price', 'stock', 'is_available']
-    list_filter = ['category', 'is_available']
+    list_display = ['name', 'Category', 'price', 'stock', 'is_available']
+    list_filter = ['Category', 'is_available']
     search_fields = ['name', 'description']
 
 @admin.register(Category)

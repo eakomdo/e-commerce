@@ -2,26 +2,21 @@ import django_filters
 from .models import Product, Category
 
 
-class ProductFilter(django_filters.filterset):
+class ProductFilter(django_filters.FilterSet):
     min_price = django_filters.NumberFilter(field_name='price', lookup_expr='gte')
     max_price = django_filters.NumberFilter(field_name='price', lookup_expr='lte')
-    Category = django_filters.CharFilter(field_name='category__slug', lookup_expr='exact')
+    category = django_filters.CharFilter(field_name='Category__slug', lookup_expr='exact')
     is_available = django_filters.BooleanFilter(field_name='is_available')
     search = django_filters.CharFilter(method='filter_search', label='Search')
     has_discount = django_filters.BooleanFilter(method='filter_has_discount', label='Has discount')
     in_stock = django_filters.BooleanFilter(method='filter_in_stock', label='in stock')
     
     class Meta:
-    model = Product
-    fields = [
-        'category',
-        'is_available',
-        'min_price',
-        'max_price',
-        'search',
-        'has_discount',
-        'in_stock',
-    ]
+        model = Product
+        fields = [
+            'Category',
+            'is_available',
+        ]
     
     
     def filter_search(self, queryset, name, value):
