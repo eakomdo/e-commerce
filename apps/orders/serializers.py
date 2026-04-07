@@ -4,4 +4,5 @@ from apps.products.serializers import ProductSerializer
 
 
 class CartItemSerializers(serializers.ModelSerializer):
-    product = ProductSerializer(many=True)
+    product = ProductSerializer(many=True
+    
