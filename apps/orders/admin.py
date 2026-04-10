@@ -9,7 +9,7 @@ class OrderAdmin(admin.ModelAdmin):
     search_fields = ['user__email']
     
 @admin.register(Cart)
-class CartAdmin(admin.ModelAdmin):
+class CartAdmin(admin.ModelAdmin)
     list_display = ['user', 'total_items', 'created_at']
     
 
