@@ -18,7 +18,7 @@ class IsAdminOrReadOnly(AllowAny):
 
 
 class CategoryListCreateView(APIView):
-    permission_classes = [IsAdminOrReadOnly
+    permission_classes = [IsAdminOrReadOnly]
 
     # list categories
     def get(self, request):
