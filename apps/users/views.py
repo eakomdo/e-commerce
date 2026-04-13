@@ -187,7 +187,7 @@ class PasswordConfirmView(APIView):
             if not default_token_generator.check_token(user, token):
                 return Response(
                     {"message": "Invalid link or token has expired"},
-                    status=status.HTTP_400_BAD_REQUES
+                    status=status.HTTP_400_BAD_REQUEST
                 )
 
             user.set_password(serializer.validated_data["new_password"])
