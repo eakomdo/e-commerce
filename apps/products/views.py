@@ -22,7 +22,7 @@ class CategoryListCreateView(APIView):
 
     # list categories
     def get(self, request):
-        categories = Category.objects.all(
+        categories = Category.objects.all()
         serializer = CategorySerializer(
             categories, many=True, context={"request": request}
         )
