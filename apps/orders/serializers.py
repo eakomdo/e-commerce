@@ -29,4 +29,25 @@ class CartItemSerializers(serializers.ModelSerializer):
         ]
         read_only_fields = ['id', 'added_at']
         
+class CartSerializer(serializers.ModelSerializer):
+    items = CartItemSerializers(many=True, read_only=True)
+    
+    total_item = serializers.IntegerField(read_only=True)
+    total_price = serializers.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        read_only=True
+    )
+    
+    class Meta:
+        model = Cart
+        fields = [
+            'id',
+            'items',
+            'total_items',
+            'total_price',
+            'created_at',
+            'updated_at'
+        ]
         
+        read_only_fields = ['id', 'created_at', 'updated_at']
