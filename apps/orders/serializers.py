@@ -58,3 +58,12 @@ class AddToCartSerializer(serializers.Serializer):
     #we get the item by id and ceck if it is available or in stock before updating cart
     def validate_product_id(self, value):
         
+        from apps.products.models import Product
+        
+        try:
+            product = Product.objects.get(id=value)
+        except Product.DoesNotExist:
+            raise serializers.ValidationError('Product cannot be found')
+        
+        
+            
