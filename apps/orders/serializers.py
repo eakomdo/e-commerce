@@ -66,4 +66,10 @@ class AddToCartSerializer(serializers.Serializer):
             raise serializers.ValidationError('Product cannot be found')
         
         
-            
+        if not product.is_available:
+            raise serializers.ValidationError('Product is not available')
+        
+        if not product.is_in_stock:
+            raise serializers.ValidationError('Produt is not in stock')
+        
+        
