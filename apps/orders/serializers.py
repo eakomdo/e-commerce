@@ -71,5 +71,7 @@ class AddToCartSerializer(serializers.Serializer):
         
         if not product.is_in_stock:
             raise serializers.ValidationError('Produt is not in stock')
+        return value
         
+    def validate(self, attrs):
         
