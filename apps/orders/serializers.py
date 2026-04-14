@@ -56,4 +56,5 @@ class CartSerializer(serializers.ModelSerializer):
 class AddToCartSerializer(serializers.Serializer):
     
     #we get the item by id and ceck if it is available or in stock before updating cart
-    
+    def validate_product_id(self, value):
+        
