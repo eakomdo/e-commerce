@@ -51,3 +51,9 @@ class CartSerializer(serializers.ModelSerializer):
         ]
         
         read_only_fields = ['id', 'created_at', 'updated_at']
+        
+#add to cart serializer
+class AddToCartSerializer(serializers.Serializer):
+    
+    #we get the item by id and ceck if it is available or in stock before updating cart
+    
