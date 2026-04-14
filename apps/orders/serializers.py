@@ -72,6 +72,16 @@ class AddToCartSerializer(serializers.Serializer):
         if not product.is_in_stock:
             raise serializers.ValidationError('Produt is not in stock')
         return value
-        
+     
+     
+    #check the requested quantity does not exceed what's in stock   
     def validate(self, attrs):
+        
+        from apps.products.models import Product
+        
+        product = Product.objects.get(id=attrs['product_id'])
+        
+        if attrs['quantity'] > product.stock:
+            raise serializers.ValidationError({f'Only {product.stock} items available in stock'})
+        return attrs 
         
