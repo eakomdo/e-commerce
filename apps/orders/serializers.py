@@ -96,7 +96,7 @@ class OrderItemSerializer(serializers.ModelSerializer):
         read_only=True
     )
     
-    class Metaa: 
+    class Meta: 
         model = OrderItem
         fields = [
             'id',
@@ -107,3 +107,17 @@ class OrderItemSerializer(serializers.ModelSerializer):
         ]
         
         read_only_fields = ['id', 'price']
+        
+
+#order serializer
+class OrderSerializer(serializers.ModelSerializer):
+    items = OrderItemSerializer(many=True, read_only=True)
+    
+total_item = serializers.IntegerField(read_only=True)
+total_price = serializers.DecimalField(
+    max_digits=10,
+    deciamal_places=2,
+    read_only =True
+)
+
+is_cancellable = serializers.BooleanField(read_only=True)
