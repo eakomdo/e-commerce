@@ -119,3 +119,22 @@ class OrderSerializer(serializers.ModelSerializer):
     )
 
     is_cancellable = serializers.BooleanField(read_only=True)
+    
+    class Meta:
+        model = Order
+        fields = [
+            'id',
+            'status',
+            'status_display',
+            'items',
+            'total_amount',
+            'shipping_address',
+            'shipping_country',
+            'shipping_city',
+            'notes',
+            'is_cancellable',
+            'created-at',
+            'upadated_at'
+        ]
+        
+        rea
