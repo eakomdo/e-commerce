@@ -153,5 +153,5 @@ class CheckoutSerializer(serializers.ModelSerializer):
     notes = serializers.CharField(required_field=False, allow_blank=True)
     
     
-    #
+    #check if the cart is not empty
     def validate(self, attrs):
