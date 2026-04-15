@@ -85,3 +85,14 @@ class AddToCartSerializer(serializers.Serializer):
             raise serializers.ValidationError({f'Only {product.stock} items available in stock'})
         return attrs 
         
+
+#order item serializer
+class OrderItemSerializer(serializers.ModelSerializer):
+    product = ProductSerializer(read_only=True)
+    
+    subtotal = serializers.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        read_only=True
+    )
+    
