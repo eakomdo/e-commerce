@@ -149,6 +149,9 @@ class OrderSerializer(serializers.ModelSerializer):
 class CheckoutSerializer(serializers.ModelSerializer):
     shipping_country = serializers.CharField(max_length=100)
     shipping_city = serializers.CharField(max_length=100)
-    shipping_address = serializers.charfield(max_lenght=100)
+    shipping_address = serializers.charfield()
+    notes = serializers.CharField(required_field=False, allow_blank=True)
     
+    
+    #
     def validate(self, attrs):
