@@ -155,3 +155,8 @@ class CheckoutSerializer(serializers.ModelSerializer):
     
     #check if the cart is not empty
     def validate(self, attrs):
+        
+        request = self.context.get(user=user)
+        user = request.user 
+        
+        
