@@ -166,3 +166,8 @@ class CheckoutSerializer(serializers.ModelSerializer):
         
         if items.cart.count() ==0:
             raise serializers.ValidationError('Your cart is empty')
+        
+        #attach cart to validated data to be used in views
+        attrs['cart'] = cart
+        
+        return attrs
