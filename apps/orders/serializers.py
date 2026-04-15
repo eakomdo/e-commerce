@@ -159,4 +159,10 @@ class CheckoutSerializer(serializers.ModelSerializer):
         request = self.context.get(user=user)
         user = request.user 
         
+        try:
+            cart = Cart.objects.get(user=user)
+        except Cart.DoesNotExist:
+            raise serializers.ValidationError('You have no active cart')
         
+        if items.cart.count() ==0:
+            raise serializers.ValidationError('Your cart is empty')
