@@ -137,4 +137,10 @@ class OrderSerializer(serializers.ModelSerializer):
             'upadated_at'
         ]
         
-        rea
+        read_only_fields = [
+            'id',
+            'status',
+            'total_amount',
+            'created_at',
+            'updated_at'
+        ]
