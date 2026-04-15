@@ -96,3 +96,14 @@ class OrderItemSerializer(serializers.ModelSerializer):
         read_only=True
     )
     
+    class Metaa: 
+        model = OrderItem
+        fields = [
+            'id',
+            'product',
+            'quantity',
+            'price',
+            'subtotal'
+        ]
+        
+        read_only_fields = ['id', 'price']
