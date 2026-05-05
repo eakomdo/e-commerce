@@ -17,4 +17,9 @@ class CartView(APIView):
         serialzer = CartSerializer(cart, context={'request' : request})
         return Response(serialzer.data, status=status.HTTP_200_OK)
     
+#add to cart 
+class AddToCartView(APIView):
+    permission_classes = [IsAuthenticated]
     
+    def get(self, request):
+        serializer = AddToCartSerializer(data=request.data)
