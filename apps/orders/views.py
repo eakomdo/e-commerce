@@ -50,7 +50,7 @@ class AddToCartView(APIView):
                 defaults={"quantity": quantity} #default is only applied when creating and ignored when item already exists 
             )
             
-            #
+            #update item quantity if it already exist in cart
             if not item_created:
                 cart_item.quantity +=quantity
                 cart_item.save()
@@ -60,3 +60,8 @@ class AddToCartView(APIView):
                 cart,
                 context={'request': request}
             )
+            
+            return Response({
+                'message': 'Item added to cart',
+                'cart' : cart_serializer.data
+            }, status=status.HTTP_201_CREATED)
