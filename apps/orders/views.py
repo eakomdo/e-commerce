@@ -65,3 +65,11 @@ class AddToCartView(APIView):
                 'message': 'Item added to cart',
                 'cart' : cart_serializer.data
             }, status=status.HTTP_201_CREATED)
+
+
+#update and delete cart item
+class UpdateCartItem(APIView):
+permission_classes = [IsAuthenticated]
+
+def put(self, request):
+    
