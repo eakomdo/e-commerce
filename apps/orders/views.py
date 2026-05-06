@@ -68,8 +68,3 @@ class AddToCartView(APIView):
 
 
 #update and delete cart item
-class UpdateCartItem(APIView):
-permission_classes = [IsAuthenticated]
-
-def put(self, request):
-    
