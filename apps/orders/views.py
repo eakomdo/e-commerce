@@ -105,7 +105,8 @@ def put(self, request, item_id):
         )
         
         return Response({
-            'Cart updated!'
+            'Cart updated!',
+            'cart': cart_serializer.data
         }status=status.HTTP_200_OK)
         
         
