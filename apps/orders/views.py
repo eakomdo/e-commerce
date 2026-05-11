@@ -71,47 +71,47 @@ class AddToCartView(APIView):
 class UpdateCartItem(APIView):
 permission_classes = [IsAuthenticated]
 
-#search item
-def get_object(self, item_id, user):
-    return get_object_or_404(
-        CartItem,
-        id=item_id,
-        cart__user=user
-    )
-    
-def put(self, request, item_id):
-    cart_item = self.get_object(item_id, request.user)
-    quantity = request.data.get('quantity')
-    
-    #check if quantity is less than 1
-    if not quantity or int(quantity) < 1:
-        return Response({
-            'error': 'Quantity must be at least 1',
-        }, status=status.HTTP_400_BAD_REQUEST)
+    #search item
+    def get_object(self, item_id, user):
+        return get_object_or_404(
+            CartItem,
+            id=item_id,
+            cart__user=user
+        )
         
-    
-    #check is item is available in stock
-    if int(quantity) > cart_item.product.stock:
-        return Response({
-            'error': f'only {cart_item.product.stock} available'
-        }, status=status.HTTP_400_BAD_REQUEST)
+    def put(self, request, item_id):
+        cart_item = self.get_object(item_id, request.user)
+        quantity = request.data.get('quantity')
         
-    cart_item.quantity = int(quantity)
-    cart_item.save()
-    
-    cart_serializer = CartSerializer(
-        cart_item.cart,
-        context={'request': request}
-    )
-    
-    return Response({
-        'Cart updated!',
-        'cart': cart_serializer.data
-    }, status=status.HTTP_200_OK)
-    
+        #check if quantity is less than 1
+        if not quantity or int(quantity) < 1:
+            return Response({
+                'error': 'Quantity must be at least 1',
+            }, status=status.HTTP_400_BAD_REQUEST)
+            
+        
+        #check is item is available in stock
+        if int(quantity) > cart_item.product.stock:
+            return Response({
+                'error': f'only {cart_item.product.stock} available'
+            }, status=status.HTTP_400_BAD_REQUEST)
+            
+        cart_item.quantity = int(quantity)
+        cart_item.save()
+        
+        cart_serializer = CartSerializer(
+            cart_item.cart,
+            context={'request': request}
+        )
+        
+        return Response({
+            'Cart updated!',
+            'cart': cart_serializer.data
+        }, status=status.HTTP_200_OK)
+        
 
-#delete an item from cart
-def delete(self, request, item_id):
+    #delete an item from cart
+    def delete(self, request, item_id):
     cart_item = self.get_object(item_id, request.user)
     cart = cart_item.cart
     
@@ -126,6 +126,14 @@ def delete(self, request, item_id):
         'Item removed from cart',
         'cart': cart_serializer.data
     }, status=status.HTTP_200_OK)
-        
     
-        
+
+#checkout order - convert your cart to an order
+class CheckoutView(APIView):
+    permission_classes = [IsAuthenticated]
+    
+    def post(self, request):
+        serializer = CheckoutSerializer(
+            data=rquest.data,
+            context={'request': self.request}
+        )
