@@ -71,5 +71,11 @@ class AddToCartView(APIView):
 class UpdateCartItem(APIView):
 permission_classes = [IsAuthenticated]
 
-def put(self, request):
+#search item
+def get_object(self, item_id, user):
+    return get_object_or_404(
+        CartItem,
+        id=item_id,
+        cart__user=user
+    )
     
