@@ -137,3 +137,9 @@ class CheckoutView(APIView):
             data=rquest.data,
             context={'request': self.request}
         )
+        
+        if serialiazer.is_valid(raise_exception=True):
+            with transaction.atomic():
+                cart = serializer.validateda_data['cart']
+                
+                #
