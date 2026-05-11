@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from django.db import transaction
-from .models import Cart, CartItem, Order, OrderItem
+from .models import Cart, CartItem, Order, OrderItem,
 from .serializers import (
     CartItemSerializers,
     CartSerializer,
@@ -79,3 +79,33 @@ def get_object(self, item_id, user):
         cart__user=user
     )
     
+def put(self, request, item_id):
+    cart_item = self.get_object(item_id, request.user)
+    quantity = request.data.get('quantity')
+    
+    #check if quantity is less than 1
+    if not quantity or int(quantity) < 1:
+        return Response({
+            'error': 'Quantity must be at least 1',
+        }, status=status.HTTP_400_BAD_REQUEST)
+        
+    
+    #check is item is available in stock
+    if int(quantity) > cart_item.product.stock:
+        return Response({
+            'error': f'only {cart_item.product.stock} available'
+        }status=status.HTTP_400_BAD_REQUEST)
+        
+        cart_item.quantity = int(quantity)
+        cart_item.save()
+        
+        cart_serializer = CartSerializer(
+            cart_item.cart,
+            context={'request': request}
+        )
+        
+        return Response({
+            'Cart updated!'
+        }status=status.HTTP_200_OK)
+        
+        
