@@ -94,19 +94,38 @@ def put(self, request, item_id):
     if int(quantity) > cart_item.product.stock:
         return Response({
             'error': f'only {cart_item.product.stock} available'
-        }status=status.HTTP_400_BAD_REQUEST)
+        }, status=status.HTTP_400_BAD_REQUEST)
         
-        cart_item.quantity = int(quantity)
-        cart_item.save()
+    cart_item.quantity = int(quantity)
+    cart_item.save()
+    
+    cart_serializer = CartSerializer(
+        cart_item.cart,
+        context={'request': request}
+    )
+    
+    return Response({
+        'Cart updated!',
+        'cart': cart_serializer.data
+    }, status=status.HTTP_200_OK)
+    
+
+#delete an item from cart
+def delete(self, request, item_id):
+    cart_item = self.get_object(item_id, request.user)
+    cart = cart_item.cart
+    
+    cart_item.delete()
+    
+    cart_serializer = CartSerializer(
+        cart,
+        context=['request': request]
+    )
+    
+    return Response({
+        'Item removed from cart',
+        'cart': cart_serializer.data
+    }, status=status.HTTP_200_OK)
         
-        cart_serializer = CartSerializer(
-            cart_item.cart,
-            context={'request': request}
-        )
-        
-        return Response({
-            'Cart updated!',
-            'cart': cart_serializer.data
-        }status=status.HTTP_200_OK)
-        
+    
         
