@@ -142,4 +142,7 @@ class CheckoutView(APIView):
             with transaction.atomic():
                 cart = serializer.validateda_data['cart']
                 
-                #
+                #calculate the total prcie
+                total_amount = cart.total_price
+                
+                
