@@ -143,6 +143,6 @@ class CheckoutView(APIView):
                 cart = serializer.validateda_data['cart']
                 
                 #calculate the total prcie
-                total_amount = cart.total_pric
+                total_amount = cart.total_pri
                 
                 
