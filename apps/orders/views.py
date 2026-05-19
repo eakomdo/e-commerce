@@ -76,7 +76,7 @@ permission_classes = [IsAuthenticated]
         return get_object_or_404(
             CartItem,
             id=item_id,
-            cart__user=user
+            cart__user=use
         )
         
     def put(self, request, item_id):
