@@ -157,7 +157,12 @@ class CheckoutView(APIView):
                 
                 
                 #create order item from cart items
-                for cart_items in CartItem.all()
+                for cart_items in cart.items.all()
                 
-                OrderItem.object
+                OrderItem.object.create(
+                    order=cart_item.product,
+                    product=cart_item.product,
+                    quantity=cart_item.quantity,
+                    price=cart_item.product.effective_price
+                )
                 
