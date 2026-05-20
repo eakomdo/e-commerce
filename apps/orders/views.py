@@ -166,3 +166,22 @@ class CheckoutView(APIView):
                     price=cart_item.product.effective_price
                 )
                 
+                
+                #reduce item quantity
+                product = cart_item.product
+                product.stock -= cart_item.quantity
+                product.save()
+                
+                #delete cart after placind order 
+                cart.delete()
+                
+                #save and return serializer
+                order_serializer = OrderSerializer(
+                    order, 
+                    context={}'request': request}
+                )
+                
+                return Response({
+                    'message': 'Your order has been placed',
+                    'order': order_serilaizer.data
+                }, status=status.HTTP_201_CREATED)
