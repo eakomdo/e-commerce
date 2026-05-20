@@ -145,4 +145,19 @@ class CheckoutView(APIView):
                 #calculate the total prcie
                 total_amount = cart.total_price
                 
+                #create order
+                order = Order.objects.create(
+                    user=request.user,
+                    total_amount=total_amount,
+                    shipping_address=serializer.validated_data['address'],
+                    shipping_city=serializer.validated_data['city'],
+                    shipping_country=serializer.validated_data['country'],
+                    notes=serializer.validated_data['notes', '']
+                )
+                
+                
+                #create order item from cart items
+                for cart_items in CartItem.all()
+                
+                OrderItem.object
                 
