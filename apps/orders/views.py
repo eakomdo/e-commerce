@@ -69,7 +69,7 @@ class AddToCartView(APIView):
 
 #update and delete cart item
 class UpdateCartItem(APIView):
-permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     #search item
     def get_object(self, item_id, user):
@@ -112,20 +112,20 @@ permission_classes = [IsAuthenticated]
 
     #delete an item from cart
     def delete(self, request, item_id):
-    cart_item = self.get_object(item_id, request.user)
-    cart = cart_item.cart
-    
-    cart_item.delete()
-    
-    cart_serializer = CartSerializer(
-        cart,
-        context=['request': request]
-    )
-    
-    return Response({
-        'Item removed from cart',
-        'cart': cart_serializer.data
-    }, status=status.HTTP_200_OK)
+        cart_item = self.get_object(item_id, request.user)
+        cart = cart_item.cart
+        
+        cart_item.delete()
+        
+        cart_serializer = CartSerializer(
+            cart,
+            context=['request': request]
+        )
+        
+        return Response({
+            'Item removed from cart',
+            'cart': cart_serializer.data
+        }, status=status.HTTP_200_OK)
     
 
 #checkout order - convert your cart to an order
@@ -178,10 +178,33 @@ class CheckoutView(APIView):
                 #save and return serializer
                 order_serializer = OrderSerializer(
                     order, 
-                    context={}'request': request}
+                    context={'request': request}
                 )
                 
                 return Response({
                     'message': 'Your order has been placed',
-                    'order': order_serilaizer.data
+                    'order': order_serializer.data
                 }, status=status.HTTP_201_CREATED)
+                
+
+#order list view - list all oder for the logged in user
+class OrderListView(APIView):
+    permission_classes = [IsAuthenticated]
+    
+    def get(self, request):
+        if user.request.is_admin:
+            orders = Order.objects.all()
+        else:
+            orders =Order.objects.filter(request=request.user)
+            
+            serializer = OrderSerializer(
+                orders,
+                many=True,
+                context={'request': request}
+            )
+            
+            return Response(
+                serializer.data,
+                status=status.HTTP_200_OK  
+            )
+            
