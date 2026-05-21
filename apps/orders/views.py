@@ -229,4 +229,16 @@ class OrderDetailView(APIView):
         )
         
         return Response(serializer.data, status=status.HTTP_200_OK)
-            
+
+
+#cancel oder view 
+class CancelOrderView(APIView):
+    permission_classes = [IsAuthenticated]
+    
+    def post(self, request, order_id)   :
+        
+        order = get_objects_or_404(
+            Order,
+            id=order_id,
+            user=requst.user
+        )        
