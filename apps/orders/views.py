@@ -241,4 +241,10 @@ class CancelOrderView(APIView):
             Order,
             id=order_id,
             user=requst.user
-        )        
+        )
+        
+        if not order.is_cancellable:
+            return Response({
+                'error': 'Order cannot be cancelled at this stage',
+            }, status=status.HTTP_400_BAD_REQUEST)
+                    
