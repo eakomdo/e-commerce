@@ -247,4 +247,12 @@ class CancelOrderView(APIView):
             return Response({
                 'error': 'Order cannot be cancelled at this stage',
             }, status=status.HTTP_400_BAD_REQUEST)
+            
+        with transaction.atomic():
+            
+            for item in order.tems.all():
+                if item.product:
+                    item.product.stock += item.quantity
+                    item.product.save()
+                    
                     
