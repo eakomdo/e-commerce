@@ -208,3 +208,25 @@ class OrderListView(APIView):
                 status=status.HTTP_200_OK  
             )
             
+
+#get a single order view
+class OrderDetailView(APIView):
+    permission_classes = [IsAuthenticated]
+    
+    def get_object(self, order_id, user):
+        if user.is_admin:
+            return get_objects_or_404(Order, id=order_id)
+        
+        #regular users can get their own orders
+        return self.get_objects_or_404(Order, id=order_id, user=user)
+    
+    def get(self, request, order_id):
+        order = self.get_object(id=order_id, request.user)
+        
+        serializer = OrderSerializer(
+            order,
+            context={'request': request}
+        )
+        
+        return Response(serializer.data, status=status.HTTP_200_OK)
+            
