@@ -255,4 +255,11 @@ class CancelOrderView(APIView):
                     item.product.stock += item.quantity
                     item.product.save()
                     
+                    #update order status
+                    order.status = Order.Status.CANCELLED
+                    order.save()
                     
+        return Response({
+            'message': 'Order cancelled successfully',
+            'Order': OrderSerializer(order).data
+        }, status=status.HTTP_200_OK)
