@@ -170,4 +170,4 @@ class CheckoutSerializer(serializers.ModelSerializer):
         #attach cart to validated data to be used in views
         attrs['cart'] = cart
         
-        return attr
+        return attrs
