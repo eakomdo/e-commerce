@@ -69,7 +69,7 @@ class AddToCartView(APIView):
 
 
 #update and delete cart item
-class UpdateCartItem(APIView):
+class UpdateCartItemView(APIView):
     permission_classes = [IsAuthenticated]
 
     #search item
