@@ -13,5 +13,5 @@ app_name ='orders'
 
 url_patterns =[
         # GET → get current cart
-    path('cart/', CartView.as_view(), name='cart')
+    path('cart/', CartView.as_view(), name='cart'),
 ]
