@@ -80,6 +80,12 @@ DATABASES = {
     }
 }
 
+
+# Paystack settings
+PAYSTACK_SECRET_KEY = env('PAYSTACK_SECRET_KEY')
+PAYSTACK_PUBLIC_KEY = env('PAYSTACK_PUBLIC_KEY')
+
+
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
